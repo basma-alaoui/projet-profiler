@@ -1,0 +1,215 @@
+{
+  "sessionId": "session_1778631786082",
+  "duration": 41,
+  "summary": {
+    "totalSignals": 34,
+    "totalAnomalies": 9,
+    "totalRequests": 25,
+    "errorRate": "24.0%",
+    "anomalyRate": "26.5%"
+  },
+  "signalBreakdown": {
+    "network_request": 25,
+    "app_log": 4,
+    "timing": 2,
+    "file_access": 2,
+    "error": 1
+  },
+  "anomalies": [
+    {
+      "id": "sig_1778631786119_fkiyq",
+      "type": "network_request",
+      "timestamp": "2026-05-13T00:23:06.119Z",
+      "score": 60,
+      "reasons": [
+        "Request spam: 11 req/sec to https://api.myapp.com/v1/status"
+      ],
+      "data": {
+        "url": "https://api.myapp.com/v1/status",
+        "method": "GET",
+        "statusCode": 200,
+        "durationMs": 50,
+        "isRetry": false
+      }
+    },
+    {
+      "id": "sig_1778631786119_yb44w",
+      "type": "network_request",
+      "timestamp": "2026-05-13T00:23:06.119Z",
+      "score": 60,
+      "reasons": [
+        "Request spam: 12 req/sec to https://api.myapp.com/v1/status"
+      ],
+      "data": {
+        "url": "https://api.myapp.com/v1/status",
+        "method": "GET",
+        "statusCode": 200,
+        "durationMs": 50,
+        "isRetry": false
+      }
+    },
+    {
+      "id": "sig_1778631786119_gtvdl",
+      "type": "network_request",
+      "timestamp": "2026-05-13T00:23:06.119Z",
+      "score": 60,
+      "reasons": [
+        "Request spam: 13 req/sec to https://api.myapp.com/v1/status"
+      ],
+      "data": {
+        "url": "https://api.myapp.com/v1/status",
+        "method": "GET",
+        "statusCode": 200,
+        "durationMs": 50,
+        "isRetry": false
+      }
+    },
+    {
+      "id": "sig_1778631786119_61s9v",
+      "type": "network_request",
+      "timestamp": "2026-05-13T00:23:06.119Z",
+      "score": 60,
+      "reasons": [
+        "Request spam: 14 req/sec to https://api.myapp.com/v1/status"
+      ],
+      "data": {
+        "url": "https://api.myapp.com/v1/status",
+        "method": "GET",
+        "statusCode": 200,
+        "durationMs": 50,
+        "isRetry": false
+      }
+    },
+    {
+      "id": "sig_1778631786119_pqfrs",
+      "type": "network_request",
+      "timestamp": "2026-05-13T00:23:06.119Z",
+      "score": 60,
+      "reasons": [
+        "Request spam: 15 req/sec to https://api.myapp.com/v1/status"
+      ],
+      "data": {
+        "url": "https://api.myapp.com/v1/status",
+        "method": "GET",
+        "statusCode": 200,
+        "durationMs": 50,
+        "isRetry": false
+      }
+    },
+    {
+      "id": "sig_1778631786119_6vvd1",
+      "type": "app_log",
+      "timestamp": "2026-05-13T00:23:06.119Z",
+      "score": 70,
+      "reasons": [
+        "Sensitive data in log output"
+      ],
+      "data": {
+        "level": "DEBUG",
+        "message": "Login successful — token=eyJhbGciOiJIUzI1NiJ9.abc123",
+        "tag": "NetworkManager"
+      }
+    },
+    {
+      "id": "sig_1778631786120_9217q",
+      "type": "app_log",
+      "timestamp": "2026-05-13T00:23:06.120Z",
+      "score": 70,
+      "reasons": [
+        "Sensitive data in log output"
+      ],
+      "data": {
+        "level": "DEBUG",
+        "message": "User password=hunter2 cached for auto-login",
+        "tag": "AuthCache"
+      }
+    },
+    {
+      "id": "sig_1778631786121_3wizh",
+      "type": "file_access",
+      "timestamp": "2026-05-13T00:23:06.121Z",
+      "score": 55,
+      "reasons": [
+        "Sensitive file access: /data/data/com.myapp/shared_prefs/credentials.xml"
+      ],
+      "data": {
+        "path": "/data/data/com.myapp/shared_prefs/credentials.xml",
+        "operation": "READ",
+        "appPid": 1234
+      }
+    },
+    {
+      "id": "sig_1778631786121_56zlf",
+      "type": "file_access",
+      "timestamp": "2026-05-13T00:23:06.121Z",
+      "score": 55,
+      "reasons": [
+        "Sensitive file access: /proc/net/tcp"
+      ],
+      "data": {
+        "path": "/proc/net/tcp",
+        "operation": "READ",
+        "appPid": 1234
+      }
+    }
+  ],
+  "rootCauseHypotheses": [
+    {
+      "type": "data_leakage",
+      "severity": "CRITICAL",
+      "description": "Sensitive data (tokens, passwords) written to logs",
+      "count": 2,
+      "recommendation": "Strip sensitive fields from log output. Use ProGuard rules to remove debug logs in release builds."
+    },
+    {
+      "type": "sensitive_file_access",
+      "severity": "HIGH",
+      "description": "Access to 2 sensitive path(s)",
+      "paths": [
+        "/data/data/com.myapp/shared_prefs/credentials.xml",
+        "/proc/net/tcp"
+      ],
+      "recommendation": "Review file access patterns. Restrict access using Android FileProvider."
+    }
+  ],
+  "recommendations": [
+    {
+      "type": "data_leakage",
+      "severity": "CRITICAL",
+      "action": "Strip sensitive fields from log output. Use ProGuard rules to remove debug logs in release builds."
+    },
+    {
+      "type": "sensitive_file_access",
+      "severity": "HIGH",
+      "action": "Review file access patterns. Restrict access using Android FileProvider."
+    }
+  ],
+  "detectorAnalysis": {
+    "features": {
+      "requestFrequency": 0.4166666666666667,
+      "errorRate": 0.28,
+      "sensitiveAccess": 0.4,
+      "retryPattern": 0.4,
+      "timingDeviation": 0.81,
+      "metadata": {
+        "windowMs": 60000,
+        "signalCount": 34,
+        "avgRequestDuration": "615",
+        "maxRequestDuration": 8100
+      }
+    },
+    "rawScore": 44,
+    "adjustedScore": 44,
+    "fprFactor": 1,
+    "classification": {
+      "level": "HIGH",
+      "color": "#E67E22",
+      "emoji": "🟠"
+    },
+    "explanation": [
+      "Sensitive file system access detected",
+      "Abnormal retry behavior",
+      "Timing anomalies detected (max: 8100ms)"
+    ]
+  }
+}
